@@ -19,7 +19,8 @@ class UserModelAdmin(BaseUserAdmin):
 
 
 admin.site.register(Customer, UserModelAdmin),
+
 admin.site.register(Car)
+fields_list = ['id', 'companyname', 'model', 'vehicle_number', 'fueltype', 'seating_capacity', 'rent_per_day',
+               'availability']
 admin.site.register(Reservation)
-
-

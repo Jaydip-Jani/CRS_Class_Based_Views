@@ -7,7 +7,7 @@ from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated, 
 
 class RegisterCustomerDetails(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Customer.objects.all()
-    serializer_class = RegisterSerializer
+    serializer_class = CustomerRegisterSerializer
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
@@ -17,9 +17,18 @@ class RegisterCustomerDetails(mixins.ListModelMixin, mixins.CreateModelMixin, ge
         return self.create(request, *args, **kwargs)
 
 
+class CustomerList(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerRegisterSerializer
+    permission_classes = (AllowAny,)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
 class UpdateCustomer(mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = Customer.objects.all()
-    serializer_class = RegisterSerializer
+    serializer_class = CustomerRegisterSerializer
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, *args, **kwargs):
@@ -28,8 +37,9 @@ class UpdateCustomer(mixins.UpdateModelMixin, generics.GenericAPIView):
 
 class DeleteCustomer(mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Customer.objects.all()
-    serializer_class = RegisterSerializer
+    serializer_class = CustomerRegisterSerializer
     permission_classes = (DjangoModelPermissions,)
+    lookup_field = "id"
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
@@ -68,15 +78,39 @@ class UpdateCar(mixins.ListModelMixin, mixins.UpdateModelMixin, generics.Generic
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
-    def update(self, request, id):
-        user = self.get_object()
-        serializers = self.get_serializer(user, data=request.data, partial=True)
-        serializers.is_valid(raise_exception=True)
-        self.perform_update(serializers)
-        return Response(serializers.data)
-
 
 class DeleteCar(mixins.ListModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = (DjangoModelPermissions,)
+    lookup_field = "id"
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+class CarReservation(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class CarReservationList(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class UpdateCarReservation(mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = (DjangoModelPermissions,)
@@ -85,12 +119,15 @@ class DeleteCar(mixins.ListModelMixin, mixins.DestroyModelMixin, generics.Generi
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
+class DeleteCarReservation(mixins.ListModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = (DjangoModelPermissions,)
+    lookup_field = "id"
+
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
-
-    def delete_car(self, request, id):
-        user = self.get_object()
-        serializers = self.get_serializer(user, data=request.data, partial=True)
-        serializers.is_valid(raise_exception=True)
-        self.delete(serializers)
-        return Response(serializers.data)
