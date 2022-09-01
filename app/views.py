@@ -30,6 +30,7 @@ class UpdateCustomer(mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerRegisterSerializer
     permission_classes = (IsAuthenticated,)
+    lookup_field = "id"
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)

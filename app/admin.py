@@ -18,9 +18,9 @@ class UserModelAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 
-admin.site.register(Customer, UserModelAdmin),
+admin.site.register(Customer),
 
 admin.site.register(Car)
-fields_list = ['id', 'companyname', 'model', 'vehicle_number', 'fueltype', 'seating_capacity', 'rent_per_day',
+list_display = ['id', 'companyname', 'model', 'vehicle_number', 'fueltype', 'seating_capacity', 'rent_per_day',
                'availability']
 admin.site.register(Reservation)
