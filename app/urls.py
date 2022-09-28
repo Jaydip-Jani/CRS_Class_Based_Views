@@ -4,7 +4,8 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from .views import *
 
 urlpatterns = [
-    path('registercustomer/', RegisterCustomerDetails.as_view()),
+    path('registration/', Registration.as_view()),
+    path('email-verify/', VerifyEmail.as_view()),
     path('customerlist/', CustomerList.as_view()),
     path('updatecustomer/<int:id>/', UpdateCustomer.as_view()),
     path('deletecustomer/<int:id>/', DeleteCustomer.as_view()),
